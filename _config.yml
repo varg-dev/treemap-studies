@@ -1,2 +1,14 @@
-name: VARG
-exclude: [.idea, README.md, .liquidrc]
+title: VARG
+
+encoding: utf-8
+
+exclude:
+  [
+    .idea,
+    README.md,
+    .liquidrc,
+    css,
+    Gemfile,
+    Gemfile.lock,
+    Markdown_cheatsheet.pdf,
+  ]
