@@ -1,0 +1,379 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "$schema": {},
+        "user studies": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "required": [ "study-id", "name", "short name", "author", "subject", "categorization", "claims", "cited by", "evaluation", "results and analysis", "notes" ],
+                "properties": {
+                    "study-id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "short name": { "type": "string" },
+                    "author": { "$ref": "#/definitions/string_or_string_array"},
+                    "subject": { "type": "string" },
+                    "categorization": { 
+                        "type": "object",
+                        "required": [ "Plaisant", "Leroy" ],
+                        "properties": {
+                            "Plaisant": {
+                                "oneOf": [
+                                    { "enum": [ "visualization technique comparison", "(visualization technique comparison)", "layout", "(layout)",  "visual variable", "(visual variable)", "treemap configuration", "(treemap configuration)", "usability evaluation", "(usability evaluation)", "meta", "(meta)" ] },
+                                    {  "type": "array", "minItems": 2, "items": { "enum": [ "visualization technique comparison", "(visualization technique comparison)", "layout", "(layout)",  "visual variable", "(visual variable)", "treemap configuration", "(treemap configuration)", "usability evaluation", "(usability evaluation)", "meta", "(meta)" ] }, "uniqueItems": true, "additionalItems": false }
+                                ]
+                            },
+                            "Leroy": {
+                                "oneOf": [
+                                    { "enum": [ "correlation study", "controlled experiment", "unknown" ] },
+                                    {  "type": "array", "minItems": 2, "items": { "enum": [ "correlation study", "controlled experiment" ] }, "uniqueItems": true, "additionalItems": false }
+                                ]
+                            }
+                        },
+                        "additionalProperties": false
+                    },
+                    "claims": { "$ref": "#/definitions/string_array" },
+                    "cited by": { "$ref": "#/definitions/string_array" },
+                    "evaluation": {
+                        "type": "object",
+                        "required": [ "hypotheses", "design", "participants", "dataset", "treemap configuration", "entry and debriefing", "tasks", "measurement" ],
+                        "properties": {
+                            "hypotheses": { "$ref": "#/definitions/string_array" },
+                            "design": {
+                                "type": "object",
+                                "required": [ "type", "independent variables design", "independent variables" ],
+                                "properties": {
+                                    "type": { 
+                                        "oneOf": [
+                                            { "enum": [ "quantitative", "qualitative", "unknown" ] },
+                                            { "type": "array", "minItems": 2, "items": { "enum": [ "quantitative", "qualitative" ] }, "uniqueItems": true, "additionalItems": false }
+                                        ]
+                                    },
+                                    "qualitative component": { "type": "string"},
+                                    "independent variables design": { "enum": [ "within-subject", "between-subjects", "unknown", "not applicable" ] },
+                                    "independent variables": { "type": "string"}
+                                },
+                                "additionalProperties": false
+                            },
+                            "participants": {
+                                "type": "object",
+                                "required": [ "count", "characterization", "implementation" ],
+                                "properties": {
+                                    "count": { "type": "integer", "minimum": 1 },
+                                    "characterization": { "type": "string" },
+                                    "implementation": { "enum": [ "laboratory", "online", "Mechanical Turk", "unknown" ] }
+                                },
+                                "additionalProperties": false
+                            },
+                            "dataset": {
+                                "type": "object",
+                                "required": [ "topology", "origin", "number of nodes" ],
+                                "properties": {
+                                    "topology": { 
+                                        "oneOf": [
+                                            { "enum": [ "list", "hierarchy", "tree", "graph", "unknown", "not applicable" ] },
+                                            { "type": "array", "minItems": 2, "items": {"enum": [ "list", "hierarchy", "tree", "graph" ] }, "uniqueItems": true, "additionalItems": false }
+                                        ]
+                                    },
+                                    "origin": {
+                                        "oneOf": [
+                                            { "enum": [ "artifical", "adapted", "real-world", "unknown", "not applicable" ] },
+                                            { "type": "array", "minItems": 2, "items": {"enum": [ "artifical", "adapted", "real-world" ] }, "uniqueItems": true, "additionalItems": false }
+                                        ]
+                                    },
+                                    "number of nodes": {
+                                        "oneOf": [
+                                            { 
+                                                "type": "object",
+                                                "required": [ "numbers", "mode" ],
+                                                "properties": {
+                                                    "numbers": { "type": "array", "minItems": 2, "items": { "type": "integer", "minimum": 1 }, "uniqueItems": true, "additionalItems": false },
+                                                    "mode": { "enum": [ "list", "from ... to" ] }
+                                                }
+                                            },
+                                            { 
+                                                "type": "object",
+                                                "required": [ "number", "mode" ],
+                                                "properties": {
+                                                    "numbers": { "type": "integer", "minimum": 1 },
+                                                    "mode": { "enum": [ "exact", "less than", "more than", "approximately" ] }
+                                                }
+                                            },
+                                            { "enum": [ "unknown", "not applicable" ] }
+                                        ]
+                                    }
+                                },
+                                "additionalProperties": false
+                            },
+                            "treemap configuration": {
+                                "oneOf": [
+                                    { "$ref": "#/definitions/treemap_configuration" },
+                                    { "type": "array", "minItems": 2, "items": { "$ref": "#/definitions/treemap_configuration" }, "uniqueItems": true, "additionalItems": false }
+                                ]
+                            },
+                            "entry and debriefing": {
+                                "type": "object",
+                                "required": [ "training", "user opinion" ],
+                                "properties": {
+                                  "training": { "type": "string" },
+                                  "user opinion": { "type": "string" }  
+                                },
+                                "additionalProperties": false
+                            },
+                            "tasks": {
+                                "type": "object",
+                                "required": [ "task list", "metaphor", "dimensionality" ],
+                                "properties": {
+                                    "task list": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "required": [ "id", "task" ],
+                                            "properties": {
+                                                "id": { "type": "string", "minLength": 1 },
+                                                "task": { "type": "string", "minLength": 1 }
+                                            },
+                                            "additionalProperties": false
+                                        },
+                                        "uniqueItems": true,
+                                        "additionalItems": false
+                                    },
+                                    "metaphor": {
+                                        "oneOf": [
+                                            { "enum": [ "containment", "levels", "unknown", "not applicable" ] },
+                                            { "type": "array", "minItems": 2, "items": { "enum": [ "containment", "levels" ] }, "uniqueItems": true, "additionalItems": false }
+                                        ]
+                                    },
+                                    "dimensionality": {
+                                        "oneOf": [
+                                            { "enum": [ "1D", "2D", "3D", "unknown", "not applicable" ] },
+                                            { "type": "array", "minItems": 2, "items": { "enum": [ "1D", "2D", "3D" ] }, "uniqueItems": true, "additionalItems": false }
+                                        ]
+                                    }
+                                },
+                                "additionalProperties": false
+                            },
+                            "measurement": {
+                                "type": "object",
+                                "required": [ "measure types", "effectiveness measures", "response types" ],
+                                "properties": {
+                                    "measure types": {
+                                        "oneOf": [
+                                            { "enum": [ "unknown", "not applicable" ] },
+                                            { "type": "array", "minItems": 1, "items": { "enum": [ "effectiveness", "(effectiveness)", "efficiency", "(efficiency)", "satisfaction", "(satisfaction)" ] }, "uniqueItems": true, "additionalItems": false }
+                                        ]
+                                    },
+                                    "effectiveness measures": {
+                                        "oneOf": [
+                                            { "enum": [ "unknown", "not applicable" ] },
+                                            { "type": "array", "minItems": 1, "items": { "enum": [ "element selection", "multi element selection", "category", "rank", "number", "text" ] }, "uniqueItems": true, "additionalItems": false }
+                                        ]
+                                    },
+                                    "response types": {
+                                        "oneOf": [
+                                            { "enum": [ "unknown", "not applicable" ] },
+                                            { "type": "array", "minItems": 1, "items": { "enum": [ "click", "multiple choice", "ranking", "slider", "free text/spoken" ] }, "uniqueItems": true, "additionalItems": false }
+                                        ]
+                                    }
+                                },
+                                "additionalProperties": false
+                            }
+                        },
+                        "additionalProperties": false
+                    },
+                    "results and analysis": {
+                        "type": "object",
+                        "required": [ "paper excerpts", "analysis of results", "analysis of tasks" ],
+                        "properties": {
+                            "paper excerpts": {
+                                "type": "object",
+                                "required": [ "results", "unproven results", "result based claims" ],
+                                "properties": {
+                                    "results": { "$ref": "#/definitions/string_array" },
+                                    "unproven results": { "$ref": "#/definitions/string_array" },
+                                    "result based claims": { "$ref": "#/definitions/string_array" },
+                                    "unproven claims": { "$ref": "#/definitions/string_array" },
+                                    "treemap rating": { "type": "string", "minLength": 0 }
+                                },
+                                "additionalProperties": false
+                            },
+                            "analysis of results": {
+                                "type": "object",
+                                "required": [ "unified results", "proven claims", "interpreted results" ],
+                                "properties": {
+                                    "unified results": { 
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "required": [ "category", "measure category", "unified result" ],
+                                            "properties": {
+                                                "category": { "$ref": "#/definitions/evaluation_type" },
+                                                "measure category": { "enum": [ "effectiveness", "efficiency", "satisfaction", "qualitative", "other" ] },
+                                                "unified result": { "type": "string", "minLength": 1 }
+                                            },
+                                            "additionalProperties": false
+                                        },
+                                        "additionalItems": false
+                                    },
+                                    "proven claims": { 
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "required": [ "category", "claim" ],
+                                            "properties": {
+                                                "category": { "$ref": "#/definitions/evaluation_types" },
+                                                "claim": { "type": "string", "minLength": 1 }
+                                            },
+                                            "additionalProperties": false
+                                        },
+                                        "additionalItems": false
+                                    },
+                                    "interpreted results": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "required": [ "category", "interpreted result" ],
+                                            "properties": {
+                                                "category": { "$ref": "#/definitions/evaluation_types" },
+                                                "interpreted result": { "type": "string", "minLength": 1 }
+                                            },
+                                            "additionalProperties": false
+                                        },
+                                        "additionalItems": false
+                                    }
+                                },
+                                "additionalProperties": false
+                            },
+                            "analysis of tasks": {
+                                "type": "array",
+                                "minItems": 0,
+                                "items": {
+                                    "type": "object",
+                                    "required": [ "task id", "task types", "rating" ],
+                                    "properties": {
+                                        "task id": { "type": "string", "minLength": 1 },
+                                        "task types": { "$ref": "#/definitions/task_types" },
+                                        "rating": { "enum": [ "positive", "neutral", "negative", "unknown", "not applicable", "" ] }
+                                    },
+                                    "additionalProperties": false
+                                },
+                                "uniqueItems": true,
+                                "additionalItems": false
+                            },
+                            "notes": { "$ref": "#/definitions/string_or_string_array" }
+                        },
+                        "additionalProperties": false
+                    },
+                    "notes": { "$ref": "#/definitions/string_or_string_array" }
+                },
+                "additionalProperties": false
+            },
+            "additionalItems": false
+        }
+    },
+    "additionalProperties": false,
+    "definitions": {
+        "string_array": {
+            "type": "array", 
+            "minItems": 0, 
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+        },
+        "non_empty_string_array": {
+            "type": "array", 
+            "minItems": 1, 
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+        },
+        "string_or_string_array": {
+            "oneOf": [
+                { "type": "string" }, 
+                { "$ref": "#/definitions/non_empty_string_array" }
+            ]
+        },
+        "treemap_configuration": {
+            "type": "object",
+            "required": [ "topology depiction", "dimensionality", "shape", "margin", "labeling", "navigation", "tool implementation", "user interface features" ],
+            "properties": {
+                "configuration name": { "type": "string", "minLength": 1 },
+                "topology depiction": {
+                    "enum": [ "non-nested", "nested", "titlebar", "cushion", "unknown", "not applicable" ]
+                },
+                "dimensionality": {
+                    "enum": [ "1D", "2D", "2.5D", "3D", "unknown", "not applicable" ]
+                },
+                "shape": {
+                    "enum": [ "rectangular", "circular", "map-like" ]
+                },
+                "margin": {
+                    "enum": [ "none", "contour", "thin", "broad", "unknown", "not applicable" ]
+                },
+                "labeling": {
+                    "enum": [ "none", "categories", "leaves", "full", "unknown", "not applicable" ]
+                },
+                "navigation": {
+                    "oneOf": [
+                        { "enum": [ "none", "unknown", "not applicable" ] },
+                        { "type": "array", "minItems": 1, "items": { "enum": [ "node zooming", "restricted", "free" ] }, "uniqueItems": true, "additionalItems": false }
+                    ]
+                },
+                "tool implementation": {
+                    "enum": [ "own", "tool", "tool (inventor)", "unknown", "not applicable" ]
+                },
+                "user interface features": {
+                    "oneOf": [
+                        { "enum": [ "none", "unknown", "not applicable" ] },
+                        { "type": "array", "minItems": 1, "items": { "enum": [ "search", "filtering", "attribute mapping", "mapping properties", "margin", "node properties" ] }, "uniqueItems": true, "additionalItems": false }
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "evaluation_type": {
+            "enum": [ 
+                "Excluded",
+                "VTC: Nodelink", "VTC: Sunburst", "VTC: Icicle Plot", "VTC: Beamtree", "VTC: Botanical Tree", "VTC: List", "VTC: Table", "VTC: Bar Chart", "VTC: Pie Chart", "VTC: Windows Explorer", "VTC: UNIX", "VTC: Eclipse & Excel", "VTC: hardcopy", 
+                "Design: Layout", "Design: VV", "Design: Configuration of Topology", "Design: Configuration of Dimension", "Design: Configuration of Shape", "Design: Configuration of Focus and Context", "Design: Configuration of Image Treemaps",
+                "Usability: Exploration Patterns", "Usability: Task Types", "Usability: Shape", "Usability: Dimension", "Usability: Interaction", 
+                "Subjective Perception: Visual Quality", "Subjective Perception: Metaphors" ]
+        },
+        "evaluation_types": {
+            "oneOf": [
+                { "$ref": "#/definitions/evaluation_type" },
+                { 
+                    "type": "array",
+                    "minItems": 2,
+                    "items": { "$ref": "#/definitions/evaluation_type" },
+                    "uniqueItems": true,
+                    "additionalItems": false
+                }
+            ]
+        },
+        "task_types": {
+            "oneOf": [
+                { 
+                    "type": "array",
+                    "minItems": 1,
+                    "items": { "$ref": "#/definitions/task_type" },
+                    "uniqueItems": true,
+                    "additionalItems": false
+                },
+                { "enum": [ "unknown" ] }
+            ]
+        },
+        "task_type": { 
+            "enum": [ "identify value (name)", "identify value (size)", "identify value (count)", "identify value ([sub]tree-attribute)", "identify value (other attribute)", 
+                "access information (locate)", "access information (size)", "access information (color)", "access information (structure)", "access information (other attribute)", 
+                "sort (size)", "sort (structure)", "sort ([sub]tree-attribute)", "sort (other attribute)",
+                "compare (size)", "compare (height)",
+                "identify distribution (size)", "identify distribution (color)", 
+                "distinguish (size)", "distinguish (height)", "distinguish (structure)", "distinguish (other attribute)",
+                "associate",
+                "correlate", 
+                "create information",
+                "other" ] 
+        }
+    }
+}
