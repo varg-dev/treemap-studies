@@ -2,6 +2,12 @@ title: VARG
 
 encoding: utf-8
 
+plugins_dir: "_plugins"
+
+strict_front_matter: true
+
+safe: true
+
 exclude:
   [
     .idea,

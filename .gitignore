@@ -4,3 +4,4 @@ Gemfile.lock
 .idea/
 Markdown_cheatsheet.pdf
 js/
+.jekyll-cache
