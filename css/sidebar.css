@@ -90,6 +90,16 @@ a:focus {
   background: #fff;
 }
 
+#sidebar ul li a.columnHidden {
+  color: #ffffff;
+  background: #6c757d;
+}
+
+#sidebar ul li a.columnHidden:hover {
+  color: #6c757d;
+  background: #17a2b8;
+}
+
 #sidebar ul li.active > a,
 a[aria-expanded="true"] {
   color: #fff;
