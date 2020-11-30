@@ -79,6 +79,10 @@ a:focus {
   padding: 10px;
 }
 
+#sidebar button {
+  margin: 10px 25px;
+}
+
 #sidebar ul li a {
   padding: 10px;
   font-size: 1.1em;
@@ -136,17 +140,6 @@ ul.CTAs a {
   margin-bottom: 5px;
 }
 
-a.download {
-  background: #fff;
-  color: #7386d5;
-}
-
-a.article,
-a.article:hover {
-  background: #6d7fcc !important;
-  color: #fff !important;
-}
-
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
@@ -198,4 +191,9 @@ a.article:hover {
 
 h1 {
   padding: 10px 25px;
+}
+
+/* table rows */
+table tbody tr.selected {
+  background: #6dcc7a;
 }

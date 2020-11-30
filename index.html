@@ -130,6 +130,7 @@
                         </ul>
                     </li>
                 </ul>
+                <button type="button" class="btn btn-success" onclick="handleRowButtonClicked(this)">Hide unselected rows</button>
             </nav>
 
             <!-- Page Content  -->
@@ -212,7 +213,7 @@
                     </thead>
                     <tbody>
                         {% for survey in site.data.studies["user studies"] %}
-                            <tr>
+                            <tr onclick="selectRow({{forloop.index0}})">
                                 <td>{{survey["study-id"]}}</td>
                                 <td>{{survey["short name"]}}</td>
                                 <td>

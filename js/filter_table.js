@@ -8,7 +8,6 @@ const SUB_LVL_COL_INDEX = 1;
 let table;
 
 function toggleColumn(index, element) {
-    console.log(element);
     if (index >= table.rows[SUB_LVL_COL_INDEX].cells.length) {
         return;
     }
@@ -49,6 +48,44 @@ function toggleSidebar() {
     $("a[aria-expanded=true]").attr("aria-expanded", "false");
 }
 
+function selectRow(index) {
+    table.rows[SUB_LVL_COL_INDEX + 1 + index].classList.toggle("selected");
+}
+
+function hideUnselectedRows() {
+    for (let i = SUB_LVL_COL_INDEX + 1; i < table.rows.length; i ++) {
+        if (!table.rows[i].classList.contains("selected")) {
+            table.rows[i].style.display = "none";
+        }
+        else {
+            table.rows[i].classList.remove("selected");
+        }
+    }
+}
+
+function showAllRows() {
+    for (let i = SUB_LVL_COL_INDEX + 1; i < table.rows.length; i ++) {
+        table.rows[i].style.display = "";
+    }
+}
+
+function handleRowButtonClicked(rowButton) {
+    const HIDING_TEXT = "Hide unselected rows";
+    const SHOW_ALL_TEXT = "Show all rows";
+
+    if (rowButton.innerText === HIDING_TEXT) {
+        hideUnselectedRows();
+        rowButton.innerText = SHOW_ALL_TEXT;
+        rowButton.classList.remove("btn-success");
+        rowButton.classList.add("btn-warning");
+    }
+    else {
+        showAllRows();
+        rowButton.innerText = HIDING_TEXT;
+        rowButton.classList.remove("btn-warning");
+        rowButton.classList.add("btn-success");
+    }
+}
 
 window.onload = function test() {
     toggleSidebar();
