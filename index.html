@@ -37,11 +37,10 @@
                 <ul class="list-unstyled components">
                     <h3>Visibility</h3>
                     {% for header in site.data.tableStructure%}
-                        {% assign count = 0 %}
                         <li class="active">
                             <a aria-expanded="false" class="dropdown-toggle" data-toggle="collapse" href="#{{header.id}}">{{header.title}}</a>
                             <ul class="collapse list-unstyled" id="{{header.id}}">
-                                {% for subheader in header.items%}
+                                {% for subheader in header.items %}
                                     <li><a href="#" onclick="toggleColumn({%increment i%}, this)">{{subheader.title}}</a></li>
                                 {% endfor %}
                             </ul>
@@ -77,9 +76,11 @@
                             {% endfor %}
                         </tr>
                         <tr>
-                            {% for header in site.data.tableStructure %}
+                            {% assign last = site.data.tableStructure.size | minus: 1 %}
+                            {% for index in (0 .. last) %}
+                                {% assign header = site.data.tableStructure[index] %}
                                 {% for subheader in header.items %}
-                                <th topLevelColumnIndex="0">{{subheader.title}}</th>
+                                <th topLevelColumnIndex="{{index}}">{{subheader.title}}</th>
                                 {% endfor %}
                             {% endfor %}
                         </tr>
