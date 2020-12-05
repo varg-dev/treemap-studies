@@ -1,0 +1,78 @@
+- id: keyData
+  title: Key Data
+  items: 
+  - id: name
+    title: Name
+    path: ['short name']
+  - id: authors
+    title: Authors
+    path: ['author']
+- id: categorization
+  title: Categorization
+  items: 
+  - id: cat-evalPractice
+    title: Evaluation Practice
+    path: ['categorization', 'Plaisant']
+- id: evaluation
+  title: Evaluation
+  items: 
+  - id: eval-data
+    title: Evaluation Data
+    path: ['evaluation', 'design', 'type']
+  - id: eval-impl
+    title: Implementation
+    path: ['evaluation', 'participants', 'implementation']
+  - id: eval-num-participants
+    title: '# Participants'
+    path: ['evaluation', 'participants', 'count']
+  - id: eval-measure
+    title: Measures
+    path: ['evaluation', 'measurement', 'measure types']
+- id: dataset
+  title: Dataset(s)
+  items:
+  - id: dataset-topology
+    title: Topology
+    path: ['evaluation', 'dataset', 'topology']
+  - id: dataset-origin
+    title: Origin 
+    path: [evaluation', 'dataset', 'origin']
+  - id: dataset-size
+    title: '# Nodes'
+    path: ['evaluation', 'dataset', 'number of nodes']
+- id: treemap-configuration
+  title: Treemap Configuration
+  items: 
+  - id: treemap-shape
+    title: Shape
+    path: ['evaluation', 'treemap configuration', 'shape']
+  - id: treemap-dim
+    title: Dimensionality
+    path: ['evaluation', 'treemap configuration', 'dimensionality']
+  - id: treemap-topology
+    title: Topology Depiction
+    path: ['evaluation', 'treemap configuration', 'topology depiction']
+  - id: treemap-margin
+    title: Offset
+    path: ['evaluation', 'treemap configuration', 'margin']
+  - id: treemap-labeling
+    title: Labeling
+    path: ['evaluation', 'treemap configuration', 'labeling']
+  - id: treemap-navigation
+    title: Navigation
+    path: ['evaluation', 'treemap configuration', 'navigation']
+  - id: treemap-ui
+    title: User Interface Features
+    path: ['evaluation', 'treemap configuration', 'user interface features']
+- id: tasks
+  title: Tasks
+  items:
+  - id: task-types
+    title: Types
+    path: ['results and analysis', 'analysis of tasks']
+  - id: task-metaphor
+    title: Verbal Metaphor
+    path: ['evaluation', 'tasks', 'metaphor']
+  - id: task-dim
+    title: Dimensionality
+    path: ['evaluation', 'tasks', 'dimensionality']

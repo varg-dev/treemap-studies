@@ -1,0 +1,23 @@
+{% if id == 'task-types' %}
+{% assign task_types = values | map: 'task types' | uniq | sort %}
+{% if task_types.size == 1 %}
+    {% assign value = task_types.first %}
+    {% include value.html%}
+{% else %}
+<ul>
+    {% for value in task_types %}
+        <li>{% include value.html%}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% elsif values.size == 1 %}
+    {% assign value = values.first %}
+    {% include value.html %}
+{% else %}
+<ul>
+    {% for v in values %}
+        {% assign value = v %}
+        <li>{% include value.html%}</li>
+    {% endfor %}
+</ul>
+{% endif %}

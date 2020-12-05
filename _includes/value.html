@@ -1,0 +1,19 @@
+{% if id == 'dataset-size' %}
+    {% if value.mode == 'exact' %}
+        {{value.number}}
+    {% elsif value.mode == 'less than' %}
+        &lt;&thinsp;{{value.number}}
+    {% elsif value.mode == 'more than' %}
+        &gt;&thinsp;{{value.number}}
+    {% elsif value.mode == 'approximately' %}
+        &asymp;&thinsp;{{value.number}}
+    {% elsif value.mode == 'from ... to' %}
+        {{value.numbers[0]}} &ndash; {{value.numbers[1]}}
+    {% elsif value.mode == 'list' %}
+        {% for number in value.numbers %} 
+            {{number}}{% if number != value.numbers.last %}, {% endif %}
+        {% endfor %}
+    {% endif %}
+{% else %}
+    {{value}}
+{% endif %}
