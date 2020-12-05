@@ -15,4 +15,5 @@ exclude:
     css,
     Gemfile,
     Gemfile.lock,
+    vendor,
   ]
