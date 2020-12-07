@@ -1,0 +1,12 @@
+<table class="table table-sm ">
+    <tbody>
+        <tr><td class="left">Topology Depiction</td><td>{%assign values = config["topology depiction"] | compact %}{%include table-content.html%}</td></tr>
+        <tr><td class="left">Dimensionality</td><td>{%assign values = config["dimensionality"] | compact %}{%include table-content.html%}</td></tr>
+        <tr><td class="left">Shape</td><td>{%assign values = config["shape"] | compact %}{%include table-content.html%}</td></tr>
+        <tr><td class="left">Offset</td><td>{%assign values = config["margin"] | compact %}{%include table-content.html%}</td></tr>
+        <tr><td class="left">Labeling</td><td>{%assign values = config["labeling"] | compact %}{%include table-content.html%}</td></tr>
+        <tr><td class="left">Navigation</td><td>{%assign values = config["navigation"] | compact %}{%include table-content.html%}</td></tr>
+        <tr><td class="left">Tool Implementation</td><td>{%assign values = config["tool implementation"] | compact %}{%include table-content.html%}</td></tr>
+        <tr><td class="left">User Interface Features</td><td>{%assign values = config["user interface features"] | compact %}{%include table-content.html%}</td></tr>
+    </tbody>
+</table>
