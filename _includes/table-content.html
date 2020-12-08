@@ -1,6 +1,6 @@
 {% if id == 'name' %}
     {{values}}<br/><br/>
-    <a href="./studies.html#{{survey['study-id']}}" target="_blank">More Details</a>
+    <button type="button" class="btn btn-outline-dark mr-4" onclick="window.location.href='details.html#{{survey['study-id']}}';">More Details</button>
 {% elsif id == 'task-types' %}
     {% assign task_types = values | map: 'task types' | uniq | sort %}
     {% if task_types.size == 1 %}

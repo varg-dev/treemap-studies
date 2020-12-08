@@ -25,99 +25,18 @@
 
     <body>
         <div class="wrapper">
-            <!-- Sidebar  -->
-            <!-- Based on: https://bootstrapious.com/p/bootstrap-sidebar -->
-            <nav id="sidebar">
-                <div id="dismiss">
-                    <i class="fas fa-arrow-left"></i>
-                </div>
-                <div class="sidebar-header">
-                    <h2>Settings</h2>
-                </div>
-
-                <ul class="list-unstyled components">
-                    <h3>Visibility</h3>
-                    {% for header in site.data.tableStructure%}
-                        <li class="active">
-                            <a aria-expanded="false" class="dropdown-toggle" data-toggle="collapse" href="#{{header.id}}">{{header.title}}</a>
-                            <ul class="collapse list-unstyled" id="{{header.id}}">
-                                {% for subheader in header.items %}
-                                    <li><a href="#" onclick="toggleColumn({%increment i%}, this)">{{subheader.title}}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </li>
-                    {% endfor %}
-                </ul>
-                <button type="button" class="btn btn-success" onclick="handleRowButtonClicked(this)">Hide unselected rows</button>
-            </nav>
 
             <!-- Page Content  -->
-            <div id="content">
-
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <div class="container-fluid">
-                        <button class="btn btn-info" id="sidebarCollapse" type="button">
-                            <i class="fas fa-align-left"></i>
-                            <span>Setting</span>
-                        </button>
-                        <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="btn btn-dark d-inline-block d-lg-none ml-auto" data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
-                            <i class="fas fa-align-justify"></i>
-                        </button>
-
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <h1>Treemap Studies</h1>
-                        </div>
-                    </div>
-                </nav>
-                <table class="table table-striped table-bordered" id="table">
-                    <thead>
-                        <tr>
-                            {% for header in site.data.tableStructure %}
-                                <th colspan="{{header.items.size}}">{{header.title}}</th>
-                            {% endfor %}
-                        </tr>
-                        <tr>
-                            {% assign last = site.data.tableStructure.size | minus: 1 %}
-                            {% for index in (0 .. last) %}
-                                {% assign header = site.data.tableStructure[index] %}
-                                {% for subheader in header.items %}
-                                <th topLevelColumnIndex="{{index}}">{{subheader.title}}</th>
-                                {% endfor %}
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for survey in site.data.studies["user studies"] %}
-                            <tr onclick="selectRow({{forloop.index0}})">
-                                {% for header in site.data.tableStructure %}
-                                    {% for subheader in header.items %}
-                                        <td>
-                                            {% assign id = subheader.id %}
-                                            {% if subheader.path.size == 1 %}
-                                                {% assign key = subheader.path[0] %}
-                                                {% assign values = survey[key] | compact %}
-                                                {% include table-content.html %}
-                                            {% elsif subheader.path.size == 2 %}
-                                                {% assign key1 = subheader.path[0] %}
-                                                {% assign key2 = subheader.path[1] %}
-                                                {% assign values = survey[key1][key2] | compact %}
-                                                {% include table-content.html %}
-                                            {% elsif subheader.path.size == 3 %}
-                                                {% assign key1 = subheader.path[0] %}
-                                                {% assign key2 = subheader.path[1] %}
-                                                {% assign key3 = subheader.path[2] %}
-                                                {% assign values = survey[key1][key2][key3] | compact %}
-                                                {% include table-content.html %}
-                                            {% else %}
-                                                ERROR
-                                            {% endif %}
-                                        </td>
-                                    {% endfor %}
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <div id="content" class="col-md-8 offset-md-2">
+                <h1 class="pl-0"><b>Welcome to Treemap Studies</b></h1>
+                <div>Data Repository for Treemap User Studies</div>
+                <div class="p-4">
+                    <button type="button" class="btn btn-outline-dark mr-4" onclick="window.location.href='studies.html';">Study Overview Table</button>
+                    <button type="button" class="btn btn-outline-dark" onclick="window.location.href='details.html';">Detailed Study Information</button>
+                </div>
+                <div class="p-4">
+                    <button type="button" class="btn btn-info" onclick="window.location.href='https://github.com/varg-dev/treemap-studies/';">Contribute</button>
+                </div>
             </div>
         </div>
 
@@ -129,8 +48,6 @@
         <script crossorigin="anonymous" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- jQuery Custom Scroller CDN -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-
-        <script src="{{ 'js/filter_table.js' | relative_url }}"></script>
 
     </body>
 </html>

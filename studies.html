@@ -1,5 +1,6 @@
 ---
 ---
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8"/>
@@ -16,216 +17,108 @@
         <!-- Scrollbar Custom CSS -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css" rel="stylesheet">
         <!-- Our Custom CSS -->
-        <link rel="stylesheet" href="/css/sidebar.css">
-        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="{{ 'css/sidebar.css' | relative_url }}">
         <!-- Font Awesome JS -->
         <script crossorigin="anonymous" defer integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"></script>
         <script crossorigin="anonymous" defer integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"></script>
     </head>
+
     <body>
         <div class="wrapper">
+            <!-- Sidebar  -->
+            <!-- Based on: https://bootstrapious.com/p/bootstrap-sidebar -->
+            <nav id="sidebar">
+                <div id="dismiss">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
+                <div class="sidebar-header">
+                    <h2>Settings</h2>
+                </div>
+
+                <ul class="list-unstyled components">
+                    <h3>Visibility</h3>
+                    {% for header in site.data.tableStructure%}
+                        <li class="active">
+                            <a aria-expanded="false" class="dropdown-toggle" data-toggle="collapse" href="#{{header.id}}">{{header.title}}</a>
+                            <ul class="collapse list-unstyled" id="{{header.id}}">
+                                {% for subheader in header.items %}
+                                    <li><a href="#" onclick="toggleColumn({%increment i%}, this)">{{subheader.title}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <button type="button" class="btn btn-outline-light" onclick="handleRowButtonClicked(this)">Hide unselected rows</button>
+            </nav>
+
             <!-- Page Content  -->
-            <div id="content" class="active">
+            <div id="content">
 
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <div class="container-fluid">
-                        <!--<button class="btn btn-info" id="sidebarCollapse" type="button">
+                        <button type="button" class="btn btn-outline-dark mr-4" onclick="window.location.href='index.html';">Back</button>
+                        <button class="btn btn-info" id="sidebarCollapse" type="button">
                             <i class="fas fa-align-left"></i>
-                            <span>Setting</span>
+                            <span>Settings</span>
                         </button>
                         <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="btn btn-dark d-inline-block d-lg-none ml-auto" data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
                             <i class="fas fa-align-justify"></i>
-                        </button>-->
+                        </button>
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <h1>Treemap Studies</h1>
                         </div>
                     </div>
                 </nav>
-                <div id="studies">
-                    {% for survey in site.data.studies["user studies"] %}
-                    {% assign study_id = survey['study-id'] %}
-                    <div class="study" id="{{study_id}}">
-                        <div>
-                            <h2>{{survey["name"]}}</h2>
-                            <table class="table table-sm m-4">
-                                <tbody>
-                                    <tr><td class="left">ID</td><td>{{survey["study-id"]}}</td></tr>
-                                    <tr><td class="left">Short Name</td><td>{{survey["short name"]}}</td></tr>
-                                    <tr><td class="left">Subject</td><td>{{survey["subject"]}}</td></tr>
-                                    <tr><td class="left">Claims</td><td>{{survey["claims"]}}</td></tr>
-                                    <tr><td class="left">Cited By</td><td>{{survey["cited by"]}}</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="m-4">
-                            <div>
-                                <h3>Categorization</h3>
-                                <table class="table table-sm ">
-                                    <tbody>
-                                        <tr><td class="left">Evaluation Practice</td><td>{%assign values = survey["categorization"]["Plaisant"] | compact %}{%include table-content.html%}</td></tr>
-                                        <tr><td class="left">Leroy</td><td>{%assign values = survey["categorization"]["Leroy"] | compact %}{%include table-content.html%}</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div>
-                                <h3>Evaluation</h3>
-                                <table class="table table-sm">
-                                    <tbody>
-                                        <tr><td class="left">Hypotheses</td><td>{%assign values = survey["evaluation"]["hypotheses"] | compact %}{%include table-content.html%}</td></tr>
-                                        <tr><td class="left">Data Type</td><td>{%assign values = survey["evaluation"]["design"]["type"] | compact %}{%include table-content.html%}</td></tr>
-                                        <tr><td class="left">Independent Variables Design</td><td>{%assign values = survey["evaluation"]["design"]["independent variables design"] | compact %}{%include table-content.html%}</td></tr>
-                                        <tr><td class="left">Independent Variables</td><td>{%assign values = survey["evaluation"]["design"]["independent variables"] | compact %}{%include table-content.html%}</td></tr>
-                                    </tbody>
-                                </table>
-                                <div>
-                                    <div class="p-4">
-                                        <h4>Participants</h4>
-                                        <table class="table table-sm">
-                                            <tbody>
-                                                <tr><td class="left">Count</td><td>{%assign values = survey["evaluation"]["participants"]["count"] | compact %}{%include table-content.html%}</td></tr>
-                                                <tr><td class="left">Characterization</td><td>{%assign values = survey["evaluation"]["participants"]["characterization"] | compact %}{%include table-content.html%}</td></tr>
-                                                <tr><td class="left">Implementation</td><td>{%assign values = survey["evaluation"]["participants"]["implementation"] | compact %}{%include table-content.html%}</td></tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="p-4">
-                                        <h4>Dataset</h4>
-                                        <table class="table table-sm ">
-                                            <tbody>
-                                                <tr><td class="left">Dataset Topology</td><td>{%assign values = survey["evaluation"]["dataset"]["topology"] | compact %}{%include table-content.html%}</td></tr>
-                                                <tr><td class="left">Dataset Origin</td><td>{%assign values = survey["evaluation"]["dataset"]["origin"] | compact %}{%include table-content.html%}</td></tr>
-                                                <tr><td class="left">Number of Nodes</td><td>{% assign id = 'dataset-size' %}{%assign values = survey["evaluation"]["dataset"]["number of nodes"] | compact %}{%include table-content.html%}{% assign id = 'other' %}</td></tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="p-4">
-                                        <h4>Treemap Configuration(s)</h4>
-                                        {% if survey["evaluation"]["treemap configuration"].size != 8 %}
-                                            <div class="d-flex flex-row flex-wrap">
-                                                {% for config in survey["evaluation"]["treemap configuration"] %}
-                                                <div class="pr-5">
-                                                    <h5>Treemap Configuration</h5>
-                                                    {% include treemap-config.html %}
-                                                </div>
-                                            {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {% assign config = survey["evaluation"]["treemap configuration"] %}
-                                            {% include treemap-config.html %}
-                                        {% endif %}
-                                    </div>
-                                    <div class="p-4">
-                                        <h4>Entry and Debriefing Participants</h4>
-                                        <table class="table">
-                                            <tbody>
-                                                <tr><td class="left">Training</td><td>{%assign values = survey["evaluation"]["entry and debriefing"]["training"] | compact %}{%include table-content.html%}</td></tr>
-                                                <tr><td class="left">User Opinion</td><td>{%assign values = survey["evaluation"]["entry and debriefing"]["user opinion"] | compact %}{%include table-content.html%}</td></tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="p-4">
-                                        <h4>Tasks</h4>
-                                        <table class="table table-sm ">
-                                            <tbody>
-                                                <tr><td class="left">Task List</td><td>{% assign id = 'task-list' %}{%assign values = survey["evaluation"]["tasks"]["task list"] | compact %}{%include table-content.html%}{% assign id = 'other' %}</td></tr>
-                                                <tr><td class="left">Verbal Metaphor</td><td>{%assign values = survey["evaluation"]["tasks"]["metaphor"] | compact %}{%include table-content.html%}</td></tr>
-                                                <tr><td class="left">Task Dimensionality</td><td>{%assign values = survey["evaluation"]["tasks"]["dimensionality"] | compact %}{%include table-content.html%}</td></tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="p-4">
-                                        <h4>Measurement</h4>
-                                        <table class="table">
-                                            <tbody>
-                                                <tr><td class="left">Measurement Type(s)</td><td>{%assign values = survey["evaluation"]["measurement"]["measure types"] | compact %}{%include table-content.html%}</td></tr>
-                                                <tr><td class="left">Effectiveness Measure(s)</td><td>{%assign values = survey["evaluation"]["measurement"]["effectiveness measures"] | compact %}{%include table-content.html%}</td></tr>
-                                                <tr><td class="left">Response Type(s)</td><td>{%assign values = survey["evaluation"]["measurement"]["response types"] | compact %}{%include table-content.html%}</td></tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <h3>Results and Analysis</h3>
-                                <div>
-                                    <div class="p-4">
-                                        <h4>Paper Excerpts</h4>
-                                        <table class="table">
-                                            <tbody>
-                                                <tr><td class="left">Results</td><td>{%assign values = survey["results and analysis"]["paper excerpts"]["results"] | compact %}{%include table-content.html%}</td></tr>
-                                                <tr><td class="left">Unproven Results</td><td>{%assign values = survey["results and analysis"]["paper excerpts"]["unproven results"] | compact %}{%include table-content.html%}</td></tr>
-                                                <tr><td class="left">Result Based Claims</td><td>{%assign values = survey["results and analysis"]["paper excerpts"]["result based claims"] | compact %}{%include table-content.html%}</td></tr>
-                                                <tr><td class="left">Unproven Claims</td><td>{%assign values = survey["results and analysis"]["paper excerpts"]["unproven claims"] | compact %}{%include table-content.html%}</td></tr>
-                                                <tr><td class="left">Treemap Rating</td><td>{%assign values = survey["results and analysis"]["paper excerpts"]["treemap rating"] | compact %}{%include table-content.html%}</td></tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="p-4">
-                                        <h4>Analysis of Results</h4>
-                                        <table class="table">
-                                            <tbody>
-                                                <tr><td class="left">Unified Results</td>
-                                                    <td>
-                                                        <dl>
-                                                            {% for result in survey["results and analysis"]["analysis of results"]["unified results"] %}
-                                                                <dt>Category</dt><dd>{%assign values = result['category'] | compact %}{%include table-content.html%}</dd>
-                                                                <dt>Measure Category</dt><dd>{%assign values = result['measure category'] | compact %}{%include table-content.html%}</dd>
-                                                                <dt>Unified Result</dt><dd>{%assign values = result['unified result'] | compact %}{%include table-content.html%}</dd>
-                                                                {%if result != survey["results and analysis"]["analysis of results"]["unified results"].last %}<hr/>{%endif%}
-                                                            {% endfor %}
-                                                        </dl>
-                                                    </td>
-                                                </tr>
-                                                <tr><td class="left">Proven Claims</td>
-                                                    <td>
-                                                        <dl>
-                                                            {% for result in survey["results and analysis"]["analysis of results"]["proven claims"] %}
-                                                                <dt>Category</dt><dd>{%assign values = result['category'] | compact %}{%include table-content.html%}</dd>
-                                                                <dt>Claim</dt><dd>{%assign values = result['claim'] | compact %}{%include table-content.html%}</dd>
-                                                                {%if result != survey["results and analysis"]["analysis of results"]["proven claims"].last %}<hr/>{%endif%}
-                                                                {% endfor %}
-                                                        </dl>
-                                                    </td>
-                                                </tr>
-                                                <tr><td class="left">Interpreted Results</td>
-                                                    <td>
-                                                        <dl>
-                                                            {% for result in survey["results and analysis"]["analysis of results"]["interpreted results"] %}
-                                                                <dt>Category</dt><dd>{%assign values = result['category'] | compact %}{%include table-content.html%}</dd>
-                                                                <dt>Interpreted Result</dt><dd>{%assign values = result['interpreted result'] | compact %}{%include table-content.html%}</dd>
-                                                                {%if result != survey["results and analysis"]["analysis of results"]["interpreted results"].last %}<hr/>{%endif%}
-                                                                {% endfor %}
-                                                        </dl>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="p-4">
-                                        <h4>Analysis of Tasks</h4>
-                                        <table class="table">
-                                            <tbody>
-                                                <tr><td class="left">Tasks</td>
-                                                    <td>
-                                                        <dl>
-                                                            {% for task in survey["results and analysis"]["analysis of tasks"] %}
-                                                                <dt>Task ID</dt><dd>{%assign values = task['task id'] | compact %}{%include table-content.html%}</dd>
-                                                                <dt>Task Types</dt><dd>{%assign values = task['task types'] | compact %}{%include table-content.html%}</dd>
-                                                                {%if task != survey["results and analysis"]["analysis of tasks"].last %}<hr/>{%endif%}
-                                                            {% endfor %}
-                                                        </dl>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
+                <table class="table table-striped table-bordered" id="table">
+                    <thead>
+                        <tr>
+                            {% for header in site.data.tableStructure %}
+                                <th colspan="{{header.items.size}}">{{header.title}}</th>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            {% assign last = site.data.tableStructure.size | minus: 1 %}
+                            {% for index in (0 .. last) %}
+                                {% assign header = site.data.tableStructure[index] %}
+                                {% for subheader in header.items %}
+                                <th topLevelColumnIndex="{{index}}">{{subheader.title}}</th>
+                                {% endfor %}
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for survey in site.data.studies["user studies"] %}
+                            <tr onclick="selectRow({{forloop.index0}})">
+                                {% for header in site.data.tableStructure %}
+                                    {% for subheader in header.items %}
+                                        <td>
+                                            {% assign id = subheader.id %}
+                                            {% if subheader.path.size == 1 %}
+                                                {% assign key = subheader.path[0] %}
+                                                {% assign values = survey[key] | compact %}
+                                                {% include table-content.html %}
+                                            {% elsif subheader.path.size == 2 %}
+                                                {% assign key1 = subheader.path[0] %}
+                                                {% assign key2 = subheader.path[1] %}
+                                                {% assign values = survey[key1][key2] | compact %}
+                                                {% include table-content.html %}
+                                            {% elsif subheader.path.size == 3 %}
+                                                {% assign key1 = subheader.path[0] %}
+                                                {% assign key2 = subheader.path[1] %}
+                                                {% assign key3 = subheader.path[2] %}
+                                                {% assign values = survey[key1][key2][key3] | compact %}
+                                                {% include table-content.html %}
+                                            {% else %}
+                                                ERROR
+                                            {% endif %}
+                                        </td>
+                                    {% endfor %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -237,5 +130,8 @@
         <script crossorigin="anonymous" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- jQuery Custom Scroller CDN -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+        <script src="{{ 'js/filter_table.js' | relative_url }}"></script>
+
     </body>
 </html>
